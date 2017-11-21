@@ -3,7 +3,7 @@ Created on Oct 24, 2017
 
 @author: Admin
 '''
-
+from PIL import Image, ImageDraw
 import nltk
 import random
 
@@ -89,3 +89,10 @@ def stitch_response(text_in):
 
 def sample_stitch():
     print(stitch_response("no"))
+
+def stitch_image(text_in):
+    stitch_pattern = Image.new("1", (512,512), 255)
+    d = ImageDraw.Draw(stitch_pattern)
+    d.text((10,10), str(stitch_response("no")))
+    return stitch_pattern
+
