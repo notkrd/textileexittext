@@ -3,9 +3,13 @@ Created on Oct 24, 2017
 
 @author: Admin
 '''
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 import nltk
 import random
+import os.path
+
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+fnt = ImageFont.truetype(os.path.join(__location__, 'Roboto-Medium.ttf'), 36)
 
 def tag_sent(sent):
     return nltk.pos_tag(nltk.word_tokenize(sent))
@@ -68,7 +72,6 @@ goats_stitch = Stitch([a_which, a_goats, a_loudly, a_chew, a_up])
 inscriptions_stitch = Stitch([a_which, a_inscriptions, a_are, a_silhouetting])
 roof_stitch = Stitch([a_up, a_into, a_the, a_warehouse, a_roof])
 
-
 stitch_dict = [whatever_stitch, loop_stitch, automation_stitch, mote_stitch, goats_stitch, inscriptions_stitch, roof_stitch]
 
 def quilt_together(stitches_known, starting_word, quilt_length):
@@ -89,10 +92,19 @@ def stitch_response(text_in):
 
 def sample_stitch():
     print(stitch_response("no"))
+    
+def get_rand_response(from_file):
+    threadof_metaphors = open(os.path.join(__location__, from_file),"r")
+    possible_lines = threadof_metaphors.readlines()
+    txt_response = str(random.choice(possible_lines)).rstrip()
+    return txt_response
+    
 
 def stitch_image(text_in):
-    stitch_pattern = Image.new("1", (512,512), 255)
+    stitch_pattern = Image.new("1", (1094,768), 255)
     d = ImageDraw.Draw(stitch_pattern)
-    d.text((10,10), str(stitch_response("no")))
-    return stitch_pattern
+    d.text((10,100), get_rand_response('threadof_metaphors.txt'), font=fnt)
+    d.text((10,250), get_rand_response('textile_metaphors.txt'), font=fnt)
+    d.text((10,500), get_rand_response('embroider_metaphors.txt'), font=fnt)
+    stitch_pattern.show()
 
