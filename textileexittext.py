@@ -4,32 +4,51 @@ Created on Nov 15, 2017
 @author: Admin
 '''
 
-embroider_mend = ["they","do","not","mend","their","rags","but","they","embroider"]
-embroider_ideal = ["embroider","her","ideal","better","on","plain","ground"]
-embroider_most = ["like","a","golden","thread","most","women","embroider"]
-embroider_future = ["embroider","their","future"]
-embroider_art = ["Art","instincts","like","vines","over","a","humble","dwelling","embroider"]
-embroider_domestic = ["embroider","only","the","common","domestic","life"]
-embroider_playfulness = ["the","charming","playfulness","with","which","she","knew","how","to","embroider"]
-embroider_somber = ["embroider","the","most","somber","scenes"]
-embroider_imagination = ["the","human","imagination","may","generally","be","trusted","to","embroider"]
-embroider_slaves = ["slaves","can","embroider"]
-embroider_penelope = ["did","not","penelope","embroider"]
-embroider_sentence = ["embroider","the","sentence"]
-embroider_lawyer = ["a","young","woman","lawyer","finds","time","to","embroider"]
-ebroider_class = ["only","lower","class","women","were","permitted","to","embroider"]
-embroider_idyll = ["embroider","the","contours","of","a","fabulous","idyll"]
-embroider_legends = ["the","legends","that","often","embroider"]
-embroider_paternity = ["embroider","the","paternity","of","famous","men"]
-embroider_brutal = ["embroider","that","brutal","man's","life","with"]
-embroider_football = ["embroider","it","with","a","mammoth","football-theme","shopping","mall"]
-embroider_Dicaprio = ["a","pillow","on","which","DiCaprio","can","Embroider"]
-embroider_spielberg = ["embroider","a","little","and","then","Spielberg","will","buy","my","book"]
-embroider_knit = ["with","nothing","more","to","do","than","knit","and","embroider"]
-embroider_lovingly = ["embroidery","it","lovingly","as"]
-embroider_eyes = ["embroider","the","eyes","shut","with","long","lashes"]
-embroider_truth = ["embroider","the","truth","to","make","a","story","sound","better"]
+from PIL import Image, ImageDraw, ImageFont
+import nltk
+import random
+import os.path
 
-embroidered_tar = ["of","tar","and","tobacco","among","the","embroidered"]
-embroidered_garlands = ["embroidered","garlands","of","white","and","red"]
-embroidered_vehemence = ["embroidered","with","a","sort","of","tremulous","vehemence"]
+HORIZONTAL_CHARACTER_LIMIT = 40
+NEWLINE_TOLERANCE = 12
+LEFT_MARGIN = 40
+VERTICAL_SPACE = 200
+TOP_MARGIN = 100
+FONT_SIZE = 48
+FONT_FACE = 'VT323-Regular.ttf'
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+fnt = ImageFont.truetype(os.path.join(__location__, FONT_FACE), FONT_SIZE)
+
+def txt_lineate(txt_in):
+    txt_out = txt_in
+    for i in range(1, 1 + len(txt_in) // HORIZONTAL_CHARACTER_LIMIT):
+        for j in range(i * (HORIZONTAL_CHARACTER_LIMIT + 1) - 1, i * (HORIZONTAL_CHARACTER_LIMIT + 1) - 1 + NEWLINE_TOLERANCE):
+            if j >= len(txt_out):
+                return txt_out
+            if j == i * (HORIZONTAL_CHARACTER_LIMIT + 1) - 1 + NEWLINE_TOLERANCE:
+                newline_index = j+1
+                break
+            if txt_out[j] == " ":
+                newline_index = j+1
+                break
+        txt_out = txt_out[:newline_index] + "\n" + txt_out[newline_index:]
+    return txt_out
+    
+def get_rand_response(from_file):
+    threadof_metaphors = open(os.path.join(__location__, from_file),"r")
+    possible_lines = threadof_metaphors.readlines()
+    txt_response = str(random.choice(possible_lines)).rstrip()
+    txt_response = txt_lineate(txt_response)
+    return txt_response
+    
+
+def stitch_image(text_in):
+    stitch_pattern = Image.new("1", (1094,768), 255)
+    d = ImageDraw.Draw(stitch_pattern)
+    thread_metaphr = get_rand_response('threadof_metaphors.txt')
+    textile_metaphr = get_rand_response('theweave_metaphors.txt')
+    embroider_metaphr = get_rand_response('embroider_metaphors.txt')
+    d.multiline_text((LEFT_MARGIN,TOP_MARGIN), thread_metaphr, font=fnt)
+    d.multiline_text((LEFT_MARGIN,TOP_MARGIN + VERTICAL_SPACE), textile_metaphr, font=fnt)
+    d.multiline_text((LEFT_MARGIN,TOP_MARGIN + 2*VERTICAL_SPACE), embroider_metaphr, font=fnt)
+    stitch_pattern.show()
