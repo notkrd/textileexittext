@@ -1,4 +1,6 @@
 '''
+WRONG FILE DO NOT USE
+
 Created on Oct 24, 2017
 
 @author: Admin
@@ -14,9 +16,9 @@ LEFT_MARGIN = 40
 VERTICAL_SPACE = 200
 TOP_MARGIN = 100
 FONT_SIZE = 48
-FONT_FACE = 'VT323-Regular.ttf'
+FONT_LOCATION = 'VT323-Regular.ttf'
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-fnt = ImageFont.truetype(os.path.join(__location__, FONT_FACE), FONT_SIZE)
+fnt = ImageFont.truetype(os.path.join(__location__, FONT_LOCATION), FONT_SIZE)
 
 def tag_sent(sent):
     return nltk.pos_tag(nltk.word_tokenize(sent))
@@ -133,4 +135,5 @@ def stitch_image(text_in):
     d.multiline_text((LEFT_MARGIN,TOP_MARGIN + VERTICAL_SPACE), textile_metaphr, font=fnt)
     d.multiline_text((LEFT_MARGIN,TOP_MARGIN + 2*VERTICAL_SPACE), embroider_metaphr, font=fnt)
     stitch_pattern.show()
+    stitch_pattern.save("exittext.bmp")
 
