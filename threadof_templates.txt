@@ -1,11 +1,11 @@
-Whose wound no thread of fate can stitch, How hast thou conjured, cruel witch, $NOUN
+Whose wound no thread of fate can stitch, How hast thou conjured, cruel witch, $NOUN_PHRASE
 a peninsula, although it was anchored to the continent by a long slender thread of land $IS
 $IS a story, a mythology, a thread of doctrine, throughout such or such a symphony, sonata
-a thread of blood, and, underneath, the thread of blood $INTRANSITIVE_VERB
+a thread of blood, and, underneath, the thread of blood $VERB_PHRASE
 A thread of fire ran up like an opening seam $IN
 perhaps the entire caravan could make it, the thread, the living thread of camels, $WOULD
-$NOUN holds upon that thread of primitive mysticism which is the vital and fertile element in all religion.
-$NOUN is granted to follow throughout its course the Karmic thread of continuity,
-$NOUN is so palpably a thread of sugar crystal that it need not get in the way of any reader.
+$NOUN_PHRASE holds upon that thread of primitive mysticism which is the vital and fertile element in all religion.
+$NOUN_PHRASE is granted to follow throughout its course the Karmic thread of continuity,
+$NOUN_PHRASE is so palpably a thread of sugar crystal that it need not get in the way of any reader.
 $NOUN_ ABSTRACT was the sole remaining thread of the ancient woof of a dawning culture
-$NOUN $INTRANSITIVE_VERB like the hysteric thread of that woman's sobbing anguish
+$NOUN_PHRASE $VERB_PHRASE like the hysteric thread of that woman's sobbing anguish
