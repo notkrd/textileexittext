@@ -13,12 +13,12 @@ IMAGE_WIDTH=750
 IMAGE_HEIGHT=1000
 WHITE_BG=255
 
-HORIZONTAL_CHARACTER_LIMIT = 15
+HORIZONTAL_CHARACTER_LIMIT = 18
 NEWLINE_TOLERANCE = 8
 LEFT_MARGIN = 20
 VERTICAL_SPACE = 200
 TOP_MARGIN = 20
-FONT_SIZE = 72
+FONT_SIZE = 90
 
 RALEWAY_EB = "fonts/Raleway-ExtraBold.ttf"
 JULIUS_REGULAR = "fonts/JuliusSansOne-Regular.ttf"
@@ -26,7 +26,7 @@ RALEWAY_MED = "fonts/Raleway-Medium.ttf"
 GEO_REG = "fonts/Geo-Regular.ttf"
 ROBOTO_MED = "fonts/Roboto-Medium.ttf"
 SPECTRAL_SB = "fonts/SpectralSC-SemiBold.ttf"
-FONT_LOCATION = SPECTRAL_SB
+FONT_LOCATION = GEO_REG
 
 THREADOF_FILE = "corpus/threadof_metaphors.txt"
 THEWEAVE_FILE = "corpus/theweave_metaphors.txt"

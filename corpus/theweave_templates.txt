@@ -5,6 +5,6 @@ $NOUN_PHRASE likes being able to feel the Fates changing the weave of the world
 reveal the lack of substance in the woven foundation. The weave should have strength and endurance. The weaving should be so firmly done
 sewed in the weave using straight human hair in a medium-brown shade and some chestnut highlights.
 She tried to grip the weave again, pull him closer.
-$NOUN_ABSTRACT sometimes depends upon the design, because the design is made by the weave.
+$NOUN_PHRASE sometimes depends upon the design, because the design is made by the weave.
 $NOUN_PHRASE is somewhat affected by the firm twisting of the yarn and the closeness of the weave
 the weave and texture of its thought is possessed of the qualities $PREPOSITION_PHRASE

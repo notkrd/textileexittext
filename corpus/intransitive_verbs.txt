@@ -1,1 +1,2 @@
 wove in and out of her thoughts, tracing a delicate embroidery
+forwards the connection to the I/O processor thread for read and write operations
