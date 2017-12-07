@@ -20,25 +20,25 @@ VERTICAL_SPACE = 200
 TOP_MARGIN = 20
 FONT_SIZE = 86
 
-FONT_LOCATION = 'Raleway-ExtraBold.ttf'
-THREADOF_FILE = "threadof_metaphors.txt"
-THEWEAVE_FILE = 'theweave_metaphors.txt'
-EMBROIDER_FILE = 'embroider_metaphors.txt'
-PINSANDNEEDLES_FILE = "pinsandneedles_metaphors.txt"
-TEXTILE_FILE = "textile_metaphors.txt"
+FONT_LOCATION = "fonts/Raleway-ExtraBold.ttf"
+THREADOF_FILE = "corpus/threadof_metaphors.txt"
+THEWEAVE_FILE = "corpus/theweave_metaphors.txt"
+EMBROIDER_FILE = "corpus/embroider_metaphors.txt"
+PINSANDNEEDLES_FILE = "corpus/pinsandneedles_metaphors.txt"
+TEXTILE_FILE = "corpus/textile_metaphors.txt"
 METAPHOR_FILES = [THREADOF_FILE, THEWEAVE_FILE, EMBROIDER_FILE, PINSANDNEEDLES_FILE, TEXTILE_FILE]
 
-THEWEAVE_TEMPLATES = "theweave_templates.txt"
-THREADOF_TEMPLATES = "threadof_templates.txt"
+THEWEAVE_TEMPLATES = "corpus/theweave_templates.txt"
+THREADOF_TEMPLATES = "corpus/threadof_templates.txt"
 TEMPLATE_FILES = [THEWEAVE_TEMPLATES, THREADOF_TEMPLATES]
 
-IN_PHRASES = "in.txt"
-WOULD_PHRASES = "would.txt"
-IS_PHRASES = "is.txt"
-PREPOSITION_PHRASES = "preposition.txt"
-NOUN_PHRASES = "noun_phrase.txt"
-VERB_PHRASES = "intransitive_verbs.txt"
-SENTENCES = "available_sentences.txt"
+IN_PHRASES = "corpus/in.txt"
+WOULD_PHRASES = "corpus/would.txt"
+IS_PHRASES = "corpus/is.txt"
+PREPOSITION_PHRASES = "corpus/preposition.txt"
+NOUN_PHRASES = "corpus/noun_phrase.txt"
+VERB_PHRASES = "corpus/intransitive_verbs.txt"
+SENTENCES = "corpus/available_sentences.txt"
 PHRASE_FILES = {"IN": IN_PHRASES, "WOULD": WOULD_PHRASES, "IS": IS_PHRASES, 
                 "PREPOSITION_PHRASE": PREPOSITION_PHRASES, "NOUN_PHRASE": NOUN_PHRASES, "VERB_PHRASE": VERB_PHRASES,
                 "SENTENCE": SENTENCES}
@@ -106,15 +106,16 @@ def get_vars(a_template):
     @param a_template: a template formatted string """
     return re.findall("(?<=\$)[\w-]*",a_template)
 
-def stitch_image(text_in="", output_file=OUTPUT_IMAGE_FILE):
-    """ Takes a string text_in as a query and outputs a file to output_file with the appropriate response """
+def make_image(some_txt, output_file=OUTPUT_IMAGE_FILE):    
+    """Saves an image with given text. """
     stitch_pattern = Image.new("1", (IMAGE_WIDTH,IMAGE_HEIGHT), WHITE_BG)
     d = ImageDraw.Draw(stitch_pattern)
-    the_text = txt_lineate(get_rand_response(pick_pattern(text_in)))
-#    textile_metaphr = get_rand_response(THEWEAVE_FILE)
-#    embroider_metaphr = get_rand_response(EMBROIDER_FILE)
-    d.multiline_text((LEFT_MARGIN,TOP_MARGIN), the_text, font=fnt)
-#    d.multiline_text((LEFT_MARGIN,TOP_MARGIN + VERTICAL_SPACE), textile_metaphr, font=fnt)
-#    d.multiline_text((LEFT_MARGIN,TOP_MARGIN + 2*VERTICAL_SPACE), embroider_metaphr, font=fnt)
-    stitch_pattern.show()
+    d.multiline_text((LEFT_MARGIN,TOP_MARGIN), some_txt, font=fnt)
     stitch_pattern.save(os.path.join(__location__, output_file))
+
+
+def stitch_image(text_in=""):
+    """ Takes a string text_in as a query and outputs a file to output_file with the appropriate response """
+    the_template = get_rand_response(pick_pattern(text_in))
+    the_text = txt_lineate(the_template)
+    make_image(the_text)
