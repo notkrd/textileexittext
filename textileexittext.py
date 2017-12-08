@@ -145,8 +145,17 @@ def make_image(some_txt, output_file=OUTPUT_IMAGE_FILE):
     stitch_pattern.save(os.path.join(__location__, output_file))
 
 
+
+def formulate_response(text_in):
+    decider = random.randint(0,1)
+    if decider == 0:
+        the_text =  pick_similar_line(text_in)
+    elif decider == 1:
+        the_template = get_rand_response(pick_pattern(text_in))
+        the_text = fill_template(the_template)
+    return the_text
+
 def stitch_image(text_in=""):
     """ Takes a string text_in as a query and outputs a file to output_file with the appropriate response """
-    the_template = get_rand_response(pick_pattern(text_in))
-    the_text = fill_template(the_template)
+    the_text = formulate_response(text_in)
     make_image(the_text)
