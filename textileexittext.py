@@ -9,7 +9,7 @@ import random, string, re
 import os.path
 import textwrap
 
-PERFORMING = True
+PERFORMING = False
 
 IMAGE_WIDTH= 600
 IMAGE_HEIGHT=800
@@ -63,6 +63,7 @@ PHRASE_FILES = {"IN": IN_PHRASES, "WOULD": WOULD_PHRASES, "IS": IS_PHRASES,
 OUTPUT_IMAGE_FILE = "exittext.bmp"
 
 WORD_RE = re.compile("\w*")
+TO_STRIP = string.punctuation + string.whitespace
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 fnt = ImageFont.truetype(os.path.join(__location__, FONT_LOCATION), FONT_SIZE)
@@ -82,7 +83,7 @@ def pick_similar_line(line_in):
     best_line = ""
     for a_line in all_possible_lines:
         if len(words_in & set(a_line.split())) > curr_best:
-            best_line = a_line.strip(string.punctuation + string.whitespace)
+            best_line = a_line.strip(TO_STRIP)
             curr_best = len(words_in & set(a_line.split()))
     return best_line
 
@@ -101,7 +102,12 @@ def kwarg_substitute(base_str, **kwargs):
     @param **kwargs: a list of variables and their substitutions
     Allows failure, like Template.safe_substitute
     """
-    return re.sub("\$[\w-]*",lambda s: kwargs[s.group(0)[1:]], base_str)
+    def substitute(s):
+        if s in kwargs:
+            return kwargs[s]
+        else:
+            return s.lower()
+    return re.sub("\$([\w-]*)", lambda s: substitute(s.group(0)[1:].strip(TO_STRIP)), base_str)
 
 def fill_template(base_str, madlibs_phrases={}, phrase_source_files = PHRASE_FILES):
     """ Replace variables with terms in a template-formatted ($VAR) string 
@@ -113,7 +119,7 @@ def fill_template(base_str, madlibs_phrases={}, phrase_source_files = PHRASE_FIL
     for a_var in discourse_vars:
         if a_var in madlibs_phrases:
             kwargs[a_var] = madlibs_phrases[a_var]
-        if a_var in phrase_source_files:
+        elif a_var in phrase_source_files:
             kwargs[a_var] = fill_template(get_rand_response(PHRASE_FILES[a_var]))
         else:
             kwargs[a_var] = ""
@@ -130,7 +136,7 @@ def get_rand_response(from_file):
     """ Simply picks a random line from a given file. """
     file_reader = open(os.path.join(__location__, from_file),"r")
     possible_lines = file_reader.readlines()
-    txt_response = str(random.choice(possible_lines)).rstrip(string.punctuation+string.whitespace)
+    txt_response = str(random.choice(possible_lines)).rstrip(TO_STRIP)
     file_reader.close()
     return txt_response
     
@@ -138,6 +144,49 @@ def get_vars(a_template):
     """ Takes a template string and returns all the variables in it.
     @param a_template: a template formatted string """
     return re.findall("(?<=\$)[\w-]*",a_template)
+
+class InputTemplate:
+    def __init__(self, trigger, madlib_blanks, template_file = MISC_TEMPLATES):
+        self.trigger = trigger
+        self.madlib_blanks = madlib_blanks
+        self.template_file = template_file
+    
+    def matches(self, some_str):
+        return some_str.startswith(self.trigger)
+    
+    def get_response(self, some_str):
+        discourse_vars = self.extract_vars(some_str)
+        the_template = get_rand_response(self.template_file)
+        return fill_template(the_template, discourse_vars)
+    
+    def extract_vars(self, some_str):
+        vars_caught = {}
+        working_str = some_str
+        if self.matches(some_str):
+            working_str = working_str[len(self.trigger):].strip(TO_STRIP)
+            for i in range(0,len(self.madlib_blanks)):
+                if i < len(self.madlib_blanks) - 1:
+                    next_index = working_str.find(self.madlib_blanks[i+1][0])
+                    print(working_str)
+                    if next_index != -1:
+                        intermediate_stuff = working_str[:next_index]
+                        if self.madlib_blanks[i][2]:
+                            vars_caught[self.madlib_blanks[i][1]] = intermediate_stuff.strip(TO_STRIP)
+                        else:
+                            vars_caught[self.madlib_blanks[i][1]] = intermediate_stuff[len(self.madlib_blanks[i][0]):].strip(TO_STRIP)
+                        working_str = working_str[next_index:].strip(TO_STRIP)
+                else:
+                    if self.madlib_blanks[i][2]:
+                        vars_caught[self.madlib_blanks[i][1]] = working_str.strip(TO_STRIP)
+                    else:
+                        vars_caught[self.madlib_blanks[i][1]] = working_str[len(self.madlib_blanks[i][0].strip(TO_STRIP)):].strip(TO_STRIP)
+        else:
+            raise ValueError("String is not of the correct template")
+        return vars_caught
+
+boughs_template = InputTemplate("the apparition",[["these","NOUN_PHRASE",True],["in","PREPOSITION_PHRASE",True],["petals on","NO",True],[" a ","ADJECTIVE",False]])
+how_you_template = InputTemplate("how",[["are", "NOUN_PHRASE",False]], THREADOF_TEMPLATES)
+ALL_TEMPLATES = [boughs_template]
 
 def make_image(some_txt, output_file=OUTPUT_IMAGE_FILE):    
     """Saves an image with given text. """
@@ -151,12 +200,13 @@ def make_image(some_txt, output_file=OUTPUT_IMAGE_FILE):
 
 
 def formulate_response(text_in):
-    decider = random.randint(0,1)
-    if decider == 1:
-        the_text =  pick_similar_line(text_in)
-    else:
-        the_template = get_rand_response(pick_pattern(text_in))
-        the_text = fill_template(the_template)
+    lower_text = text_in.lower()
+    for a_template in ALL_TEMPLATES:
+        if a_template.matches(lower_text):
+            return a_template.get_response(lower_text)
+   
+    the_template = get_rand_response(pick_pattern(lower_text))
+    the_text = fill_template(the_template)
     return the_text
 
 def stitch_image(text_in=""):
