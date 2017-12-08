@@ -1,0 +1,4 @@
+Did not Penelope embroider $NOUN_PHRASE
+$NOUN_PHRASE tell(s) of an unknown country and other men repeat and embroider
+$NOUN_PHRASE $IS $PREPOSITION
+$NOUN_PHRASE could explain why my fingers seem to be full of hot pins and needles shooting
