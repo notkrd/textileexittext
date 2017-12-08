@@ -18,7 +18,7 @@ NEWLINE_TOLERANCE = 8
 LEFT_MARGIN = 20
 VERTICAL_SPACE = 200
 TOP_MARGIN = 20
-FONT_SIZE = 96
+FONT_SIZE = 108
 
 RALEWAY_EB = "fonts/Raleway-ExtraBold.ttf"
 JULIUS_REGULAR = "fonts/JuliusSansOne-Regular.ttf"
@@ -27,7 +27,7 @@ GEO_REG = "fonts/Geo-Regular.ttf"
 ROBOTO_MED = "fonts/Roboto-Medium.ttf"
 SPECTRAL_SB = "fonts/SpectralSC-SemiBold.ttf"
 TEKO_SB = "fonts/Teko-SemiBold.ttf"
-FONT_LOCATION = TEKO_SB
+FONT_LOCATION = GEO_REG
 
 THREADOF_FILE = "corpus/threadof_metaphors.txt"
 THEWEAVE_FILE = "corpus/theweave_metaphors.txt"
