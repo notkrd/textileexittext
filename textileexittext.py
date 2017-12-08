@@ -123,7 +123,8 @@ def pick_pattern(trigger_str=""):
     """ Takes a string and returns an appropriate corpus filename """
     if trigger_str == "thread":
         return THREADOF_FILE
-    return random.choice(list(TEMPLATE_FILES.values()))
+    else:
+        return random.choice(list(TEMPLATE_FILES.values()))
     
 def get_rand_response(from_file):
     """ Simply picks a random line from a given file. """
@@ -151,9 +152,9 @@ def make_image(some_txt, output_file=OUTPUT_IMAGE_FILE):
 
 def formulate_response(text_in):
     decider = random.randint(0,1)
-    if decider == 0:
+    if decider == 1:
         the_text =  pick_similar_line(text_in)
-    elif decider == 1:
+    else:
         the_template = get_rand_response(pick_pattern(text_in))
         the_text = fill_template(the_template)
     return the_text
