@@ -9,7 +9,7 @@ import random, string, re
 import os.path
 import textwrap
 
-PERFORMING = False
+PERFORMING = True
 
 IMAGE_WIDTH= 600
 IMAGE_HEIGHT=800
@@ -167,7 +167,6 @@ class InputTemplate:
             for i in range(0,len(self.madlib_blanks)):
                 if i < len(self.madlib_blanks) - 1:
                     next_index = working_str.find(self.madlib_blanks[i+1][0])
-                    print(working_str)
                     if next_index != -1:
                         intermediate_stuff = working_str[:next_index]
                         if self.madlib_blanks[i][2]:
@@ -186,7 +185,10 @@ class InputTemplate:
 
 boughs_template = InputTemplate("the apparition",[["these","NOUN_PHRASE",True],["in","PREPOSITION_PHRASE",True],["petals on","NO",True],[" a ","ADJECTIVE",False]])
 how_you_template = InputTemplate("how",[["are", "NOUN_PHRASE",False]], THREADOF_TEMPLATES)
-ALL_TEMPLATES = [boughs_template]
+watch_template = InputTemplate("i want to",[["watch", "NOUN_PHRASE",False],["i do not", "NO", True]], THEWEAVE_TEMPLATES)
+what_template = InputTemplate("what",[["is","NOUN_PHRASE",False]], THREADOF_TEMPLATES)
+what_template = InputTemplate("what",[["are","NOUN_PHRASE",False]], EMBROIDER_TEMPLATES)
+ALL_TEMPLATES = [boughs_template, how_you_template, watch_template]
 
 def make_image(some_txt, output_file=OUTPUT_IMAGE_FILE):    
     """Saves an image with given text. """
