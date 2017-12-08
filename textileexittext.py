@@ -204,10 +204,7 @@ def formulate_response(text_in):
     for a_template in ALL_TEMPLATES:
         if a_template.matches(lower_text):
             return a_template.get_response(lower_text)
-   
-    the_template = get_rand_response(pick_pattern(lower_text))
-    the_text = fill_template(the_template)
-    return the_text
+    return pick_similar_line(text_in)
 
 def stitch_image(text_in=""):
     """ Takes a string text_in as a query and outputs a file to output_file with the appropriate response """
