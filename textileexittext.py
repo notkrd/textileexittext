@@ -9,16 +9,16 @@ import random, string, re
 import os.path
 import textwrap
 
-IMAGE_WIDTH=750
-IMAGE_HEIGHT=1000
+IMAGE_WIDTH= 500
+IMAGE_HEIGHT=900
 WHITE_BG=255
 
-HORIZONTAL_CHARACTER_LIMIT = 15
+HORIZONTAL_CHARACTER_LIMIT = 12
 NEWLINE_TOLERANCE = 8
-LEFT_MARGIN = 20
+LEFT_MARGIN = 10
 VERTICAL_SPACE = 200
-TOP_MARGIN = 20
-FONT_SIZE = 108
+TOP_MARGIN = 10
+FONT_SIZE = 90
 
 RALEWAY_EB = "fonts/Raleway-ExtraBold.ttf"
 JULIUS_REGULAR = "fonts/JuliusSansOne-Regular.ttf"
@@ -65,6 +65,8 @@ WORD_RE = re.compile("\w*")
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 fnt = ImageFont.truetype(os.path.join(__location__, FONT_LOCATION), FONT_SIZE)
 
+INSIGNIFICANT_WORDS = set(["the","of","to", "and", "a", "in", "is", "it", "you", "that", "was", "for", "on", "are", "with", "as", "I", "his", "they", "be", "at", "one", "have", "this", "from", "or", "had", "by", "hot", "word", "but", "what", "some", "can", "out", "other", "were", "all", "there", "when", "up", "use", "your", "how", "said", "an", "each"])
+
 all_possible_lines = []
 for a_collection in METAPHOR_FILES:
     file_reader = open(os.path.join(__location__, a_collection),"r")
@@ -72,7 +74,15 @@ for a_collection in METAPHOR_FILES:
     file_reader.close()
 
 def pick_similar_line(line_in):
-    pass
+    random.shuffle(all_possible_lines)
+    words_in = set(line_in.split()).difference(INSIGNIFICANT_WORDS)
+    curr_best = -1
+    best_line = ""
+    for a_line in all_possible_lines:
+        if len(words_in & set(a_line.split())) > curr_best:
+            best_line = a_line.strip(string.punctuation + string.whitespace)
+            curr_best = len(words_in & set(a_line.split()))
+    return best_line
 
 def txt_lineate(txt_in, character_limit=HORIZONTAL_CHARACTER_LIMIT, tolerance=NEWLINE_TOLERANCE):
     """ Inserts newlines into a string, to fit the image. 
