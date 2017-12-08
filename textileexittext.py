@@ -9,11 +9,13 @@ import random, string, re
 import os.path
 import textwrap
 
-IMAGE_WIDTH= 500
-IMAGE_HEIGHT=850
+PERFORMING = True
+
+IMAGE_WIDTH= 600
+IMAGE_HEIGHT=800
 WHITE_BG=255
 
-HORIZONTAL_CHARACTER_LIMIT = 12
+HORIZONTAL_CHARACTER_LIMIT = 14
 NEWLINE_TOLERANCE = 8
 LEFT_MARGIN = 10
 VERTICAL_SPACE = 200
@@ -141,7 +143,8 @@ def make_image(some_txt, output_file=OUTPUT_IMAGE_FILE):
     stitch_pattern = Image.new("1", (IMAGE_WIDTH,IMAGE_HEIGHT), WHITE_BG)
     d = ImageDraw.Draw(stitch_pattern)
     d.multiline_text((LEFT_MARGIN,TOP_MARGIN), txt_lineate(some_txt.upper()), font=fnt)
-    stitch_pattern.show()
+    if not PERFORMING:
+        stitch_pattern.show()
     stitch_pattern.save(os.path.join(__location__, output_file))
 
 
